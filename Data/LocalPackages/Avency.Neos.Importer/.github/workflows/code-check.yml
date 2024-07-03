@@ -1,0 +1,95 @@
+name: Code Check
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  phpmd-check:
+    if: github.actor != 'dependabot[bot]'
+    name: PHPMD Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the workspace
+        uses: actions/checkout@v3
+
+      - name: Run phpmd "cleancode"
+        uses: avency/action-reviewdog-phpmd@c90c01a1559a5b6b12f82e7e5fe145fa11fe2c99
+        with:
+          name: 'PHPMD (cleancode)'
+          github_token: '${{ github.token }}'
+          level: 'error'
+          reporter: 'github-pr-check'
+          standard: 'cleancode'
+          target_directory: '.'
+          exclude: 'Migrations/Mysql/Version*'
+
+      - name: Run phpmd "codesize"
+        uses: avency/action-reviewdog-phpmd@c90c01a1559a5b6b12f82e7e5fe145fa11fe2c99
+        with:
+          name: 'PHPMD (codesize)'
+          github_token: '${{ github.token }}'
+          level: 'error'
+          reporter: 'github-pr-check'
+          standard: 'codesize'
+          target_directory: '.'
+          exclude: 'Migrations/Mysql/Version*'
+
+      - name: Run phpmd "controversial"
+        uses: avency/action-reviewdog-phpmd@c90c01a1559a5b6b12f82e7e5fe145fa11fe2c99
+        with:
+          name: 'PHPMD (controversial)'
+          github_token: '${{ github.token }}'
+          level: 'error'
+          reporter: 'github-pr-check'
+          standard: 'controversial'
+          target_directory: '.'
+          exclude: 'Migrations/Mysql/Version*'
+
+      - name: Run phpmd "design"
+        uses: avency/action-reviewdog-phpmd@c90c01a1559a5b6b12f82e7e5fe145fa11fe2c99
+        with:
+          name: 'PHPMD (design)'
+          github_token: '${{ github.token }}'
+          level: 'error'
+          reporter: 'github-pr-check'
+          standard: 'design'
+          target_directory: '.'
+          exclude: 'Migrations/Mysql/Version*'
+
+      - name: Run phpmd "naming"
+        uses: avency/action-reviewdog-phpmd@c90c01a1559a5b6b12f82e7e5fe145fa11fe2c99
+        with:
+          name: 'PHPMD (naming)'
+          github_token: '${{ github.token }}'
+          level: 'error'
+          reporter: 'github-pr-check'
+          standard: 'phpmd.ruleset.naming.xml'
+          target_directory: '.'
+          exclude: 'Migrations/Mysql/Version*'
+
+      - name: Run phpmd "unusedcode"
+        uses: avency/action-reviewdog-phpmd@c90c01a1559a5b6b12f82e7e5fe145fa11fe2c99
+        with:
+          name: 'PHPMD (unusedcode)'
+          github_token: '${{ github.token }}'
+          level: 'error'
+          reporter: 'github-pr-check'
+          standard: 'unusedcode'
+          target_directory: '.'
+          exclude: 'Migrations/Mysql/Version*'
+
+  yaml-check:
+    if: github.actor != 'dependabot[bot]'
+    name: YAML Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the workspace
+        uses: actions/checkout@v3
+
+      - name: Run YAML lint
+        uses: reviewdog/action-yamllint@8c429dfe4fc47b1ce1fa99a64e94693880d5dc30
+        with:
+          level: 'error'
+          reporter: 'github-pr-check'
+          yamllint_flags: '.'

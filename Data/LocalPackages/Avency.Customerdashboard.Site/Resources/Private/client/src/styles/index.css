@@ -1,0 +1,51 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import './fonts.css';
+
+@layer base {
+    body {
+        @apply font-main text-bodyColor;
+    }
+
+    h1 {
+        @apply text-h1 font-h1 leading-h1 mt-3 mb-2;
+    }
+
+    h2 {
+        @apply text-h2 font-h2 leading-h2 mt-3 mb-2;
+    }
+
+    h3 {
+        @apply text-h3 font-h3 leading-h3 mt-3 mb-2;
+    }
+
+    h4 {
+        @apply text-h4 font-h4 leading-h4 mt-2 mb-1;
+    }
+
+    h5 {
+        @apply text-h5 font-h5 leading-h5 mt-1 mb-1;
+    }
+
+    h6 {
+        @apply text-h6 font-h6 leading-h6 mt-1 mb-1;
+    }
+
+    p {
+        @apply text-sm md:text-base mb-2;
+    }
+
+    strong {
+        @apply text-[14px] md:text-[16px] leading-[22px] md:leading-[24px] font-bold;
+    }
+
+    code {
+        @apply text-[14px];
+    }
+
+    .box {
+        @apply bg-box-background rounded-xl shadow-xl p-[35px] overflow-x-auto;
+    }
+}

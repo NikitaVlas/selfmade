@@ -1,0 +1,5 @@
+Avency:
+  Neos:
+    Importer:
+      errors:
+        sendEmails: false

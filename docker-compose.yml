@@ -1,0 +1,87 @@
+#version: '3.5'
+#
+#services:
+#  php:
+#    image: local-dashboard-php
+#    build: ./Docker/php-fpm
+#    working_dir: /data
+#    links:
+#      - mariadb
+#    environment:
+#        FLOW_CONTEXT: '${FLOW_CONTEXT}'
+#        FLOW_HTTP_TRUSTED_PROXIES: '*'
+#        PROJECT_IDENTIFIER: '${PROJECT_IDENTIFIER}'
+#        PROJECT_URL: 'https://${PROJECT_DOMAIN}/'
+#        MYSQL_DATABASE: '${MYSQL_DATABASE}'
+#        MYSQL_USER: '${MYSQL_USER}'
+#        MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+#        TROI_MYSQL_HOST: '${TROI_MYSQL_HOST}'
+#        TROI_MYSQL_DATABASE: '${TROI_MYSQL_DATABASE}'
+#        TROI_MYSQL_USER: '${TROI_MYSQL_USER}'
+#        TROI_MYSQL_PASSWORD: '${TROI_MYSQL_PASSWORD}'
+#    volumes:
+#      - './Data:/data'
+#
+#  nginx:
+#    build: ./Docker/nginx
+#    links:
+#      - php
+#    environment:
+#      VIRTUAL_HOST: '${PROJECT_DOMAIN}'
+#    command: /bin/sh -c "/run_nginx.sh"
+#    volumes:
+#      - './Data:/data'
+#    networks:
+#      - default
+#      - nginx-proxy
+#    labels:
+#      - 'traefik.enable=true'
+#      - 'traefik.http.routers.${PROJECT_IDENTIFIER}.tls=true'
+#      - 'traefik.http.routers.${PROJECT_IDENTIFIER}.entrypoints=https'
+#      - 'traefik.http.routers.${PROJECT_IDENTIFIER}.rule=Host(`${PROJECT_DOMAIN}`)'
+#
+#  mariadb:
+#    image: mariadb:10.11
+#    command: '--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
+#    environment:
+#      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+#      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+#      MYSQL_USER: '${MYSQL_USER}'
+#      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+#    ports:
+#      - ${MYSQL_PORT}:3306
+#    volumes:
+#      - './MariaDB:/var/lib/mysql'
+#
+#  importer-customer:
+#    image: local-dashboard-php
+#    environment:
+#      FLOW_CONTEXT: '${FLOW_CONTEXT}'
+#      FLOW_HTTP_TRUSTED_PROXIES: '*'
+#      PROJECT_IDENTIFIER: '${PROJECT_IDENTIFIER}'
+#      PROJECT_URL: 'https://${PROJECT_DOMAIN}/'
+#      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+#      MYSQL_USER: '${MYSQL_USER}'
+#      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+#      TROI_MYSQL_HOST: '${TROI_MYSQL_HOST}'
+#      TROI_MYSQL_DATABASE: '${TROI_MYSQL_DATABASE}'
+#      TROI_MYSQL_USER: '${TROI_MYSQL_USER}'
+#      TROI_MYSQL_PASSWORD: '${TROI_MYSQL_PASSWORD}'
+#    working_dir: /data
+#    volumes:
+#      - './Data:/data'
+#    links:
+#      - mariadb
+#    stdin_open: true
+#    tty: true
+#    command: /bin/sh -c "./flow import:preparedata --preset import --batch-size 100 && ./flow import:batch --preset import --batch-size 1000"
+#    labels:
+#      cron.schedule: 0 * * * * ?
+#
+#networks:
+#  nginx-proxy:
+#    name: nginx-proxy
+#    external: true
+#  default:
+#    name: '${PROJECT_IDENTIFIER}'
+#    driver: bridge

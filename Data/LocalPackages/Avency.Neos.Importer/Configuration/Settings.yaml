@@ -1,0 +1,30 @@
+Avency:
+  Neos:
+    Importer:
+      presets:
+        # 'products':
+        #   label: 'Product Import'
+        #   dataProviderClassName: 'Avency\Neos\Imports\DataProvider\ProductDataProvider'
+        #   importerClassName: 'Avency\Neos\Imports\Importer\ProductImporter'
+      errors:
+        sendEmails: true
+        senderEmail: 'errors@avency.de'
+        senderName: 'avency GmbH'
+        replyTo: 'errors@avency.de'
+        toAddress: 'errors@avency.de'
+
+Neos:
+  Flow:
+    log:
+      psr3:
+        'Neos\Flow\Log\PsrLoggerFactory':
+          neosImporterLogger:
+            default:
+              class: Neos\Flow\Log\Backend\FileBackend
+              options:
+                logFileURL: '%FLOW_PATH_DATA%Logs/Importer.log'
+                createParentDirectories: true
+                severityThreshold: '%LOG_INFO%'
+                maximumLogFileSize: 10485760
+                logFilesToKeep: 2
+                logMessageOrigin: false
